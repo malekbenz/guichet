@@ -1,0 +1,23 @@
+{
+  "name": "guichet",
+  "version": "0.0.0",
+  "homepage": "https://github.com/malekbenz/guichet",
+  "description": "",
+  "main": "",
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.5"
+  }
+}

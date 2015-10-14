@@ -1,0 +1,25 @@
+{
+  "name": "guichet",
+  "version": "1.0.0",
+  "description": "gestion de guichet",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/malekbenz/guichet.git"
+  },
+  "author": "malekbenz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/malekbenz/guichet/issues"
+  },
+  "homepage": "https://github.com/malekbenz/guichet#readme",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "multer": "^1.0.6"
+  }
+}
