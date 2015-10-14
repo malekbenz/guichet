@@ -31,7 +31,6 @@
         $(that.list).on("click", ".list-group-item", function () {
             var item =Number($(this).text());
             $(this).fadeOut().remove();
-
             that.elements.splice( that.elements.indexOf(item),1);
             that.updateBadge();
             })
@@ -41,12 +40,16 @@
     })(this);
     this.addElement = function () {
         var i = this.elements.length % 3;
-        this.list.append($(itemTemplate).addClass(cssElment[i]).text(this.count));
-        this.elements.push(this.count);
-        this.count = (++this.count) % max || 1;
+        var lastItem = this.elements[(this.elements.length-1)] || 0 ;
+        console.log(lastItem);
+        // this.list.append($(itemTemplate).addClass(cssElment[i]).text(this.count));
+        var nxtNumber = ++lastItem % max || 1;
+        this.list.append($(itemTemplate).addClass(cssElment[i]).text(nxtNumber));
+        this.elements.push(nxtNumber);
+        // this.count = (++this.count) % max || 1;
         this.updateBadge();
 
-        console.log(this.elements.length)
+
 
     }
 }
@@ -54,8 +57,4 @@
 anemAttent.prototype.updateBadge = function () {
     this.badge.text(this.elements.length);
     this.badgeNxt.text(this.elements[0] || 0 );
-
 }
-// anemAttent.prototype.len = function () {
-//     return this.list.find(".list-group-item").length;
-// }
