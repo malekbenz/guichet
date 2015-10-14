@@ -29,46 +29,33 @@
 
     (function (that) {
         $(that.list).on("click", ".list-group-item", function () {
-            var item =Number( $(this).text());
+            var item =Number($(this).text());
             $(this).fadeOut().remove();
-            that.updateBadge(item);
-            var index = that.elements.indexOf(item);
-            that.elements.splice( index,1);
-            console.log(that.elements);
 
-
-
-        })
+            that.elements.splice( that.elements.indexOf(item),1);
+            that.updateBadge();
+            })
         myDiv.find("button").on("click", function () {
             that.addElement();
         })
     })(this);
     this.addElement = function () {
-        var i = this.len() % 3;
+        var i = this.elements.length % 3;
         this.list.append($(itemTemplate).addClass(cssElment[i]).text(this.count));
-        this.elements.push(this.count)
-        console.log(this.elements);
-
+        this.elements.push(this.count);
         this.count = (++this.count) % max || 1;
-        this.updateBadge(this.count);
-        // console.log(this.elements);
+        this.updateBadge();
+
+        console.log(this.elements.length)
+
     }
 }
 
-anemAttent.prototype.updateBadge = function (rmv) {
-    this.badge.text(this.len());
-
-    if (!rmv) return;
-    console.log(this.len());
-
-    if (rmv <= this.badgeNxt.text())
-        this.badgeNxt.text(Number(rmv) + 1);
-
-    if (!this.len()) this.badgeNxt.text(this.count);
-    //if (!this.badgeNxt.text()) this.badgeNxt.text(1);
-
+anemAttent.prototype.updateBadge = function () {
+    this.badge.text(this.elements.length);
+    this.badgeNxt.text(this.elements[0] || 0 );
 
 }
-anemAttent.prototype.len = function () {
-    return this.list.find(".list-group-item").length;
-}
+// anemAttent.prototype.len = function () {
+//     return this.list.find(".list-group-item").length;
+// }
