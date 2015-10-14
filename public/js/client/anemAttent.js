@@ -6,6 +6,7 @@
     var itemTemplate = '<a href="#" class="list-group-item "></a>',
         cssElment = ['list-group-item-danger', 'list-group-item-success', 'list-group-item-warning'];
 
+    var elements = [];
     function addListItemInline(idName) {
         var mydiv = $('<div><div class="panel panel-default">    <div class="panel-body">'
                         + '<button class="btn btn-primary btn-lg btn-block">' + idName
@@ -17,6 +18,7 @@
             .addClass("col-md-4");
         return mydiv;
     }
+
     var myDiv = addListItemInline(parentName, contentId).appendTo(contentId);
     this.list = $(parentId).find(".list-group");
     this.count = 1;
@@ -39,6 +41,7 @@
         this.list.append($(itemTemplate).addClass(cssElment[i]).text(this.count));
         this.count = (++this.count) % max || 1;
         this.updateBadge();
+        console.log(elements)
     }
 }
 
