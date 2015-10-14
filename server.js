@@ -10,21 +10,6 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 app.use(express.static(__dirname + '/public'));
 
-
-developers = [
-    { firstName: "Maaref", lastName: "Marok" },
-    { firstName: "Benzemam", lastName: "Abdelghani" },
-    { firstName: "Bensadi", lastName: "Rooney" }
-]
-
-app.delete('/api/developer/:index', function (req, res) {
-
-    developers.splice(req.params.index, 1);
-
-    res.json(developers);
-
-});
-
 app.post('/api/developer', function (req, res) {
     var devloper = req.body;
     developers.push(devloper);
@@ -36,9 +21,6 @@ app.get('/api/developer', function (req, res) {
     res.send
 });
 
-app.get('/animation', function (req, res) {
-    res.sendFile("views/animation/index");
-});
 
 app.get('/api/developer/:index', function (req, res) {
     res.json(developers[req.params.index]);
