@@ -66,8 +66,6 @@
         this.list.append($(item).attr("id",parentName+nxtNumber).addClass(cssElment[i]).text(nxtNumber));
         this.elements.push(nxtNumber);
         this.items.push(parentName+nxtNumber);
-        console.log(this.items);
-        console.log(this.elements);
         this.updateBadge();
     }
 }

@@ -21,26 +21,16 @@
 
 
 
-    $("#addMessage").on("click",function(){
-            socket.emit("addElement", {
-                      srvName:"demande",
-                      element:"my element"
-                  }
-              );
-    })
 
 
     socket.on("removeElement", function(msg){
-                  console.log(msg.element);
                    demande.removeElement(msg.element);
-
                       })
 
     socket.on("addElement", function(msg){
-              console.log(msg.element);
               demande.addElement();
-
                   })
+
     socket.on("myTimer", function(msg){
                           myTimer.innerHTML=  msg ;
                               })
