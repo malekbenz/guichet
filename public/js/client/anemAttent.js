@@ -20,11 +20,8 @@
 
     var myDiv = addListItemInline(parentName, contentId).appendTo(contentId);
     this.elements = [];
-    this.list = $(parentId).find(".list-group");
-    this.count = 1;
-    this.next = 1;
-
-    this.badge = myDiv.find(".attent");
+    this.list     = $(parentId).find(".list-group");
+    this.badge    = myDiv.find(".attent");
     this.badgeNxt = myDiv.find(".next");
 
     (function (that) {
@@ -41,16 +38,12 @@
     this.addElement = function () {
         var i = this.elements.length % 3;
         var lastItem = this.elements[(this.elements.length-1)] || 0 ;
-        console.log(lastItem);
-        // this.list.append($(itemTemplate).addClass(cssElment[i]).text(this.count));
+
         var nxtNumber = ++lastItem % max || 1;
         this.list.append($(itemTemplate).addClass(cssElment[i]).text(nxtNumber));
         this.elements.push(nxtNumber);
-        // this.count = (++this.count) % max || 1;
+
         this.updateBadge();
-
-
-
     }
 }
 
