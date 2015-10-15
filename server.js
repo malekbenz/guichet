@@ -35,6 +35,12 @@ io.on("connection", function(socket)
             socket.broadcast.emit("addElement",msg);
             // io.emit("addMessage",msg);
             });
+
+    socket.on("removeElement", function(msg){
+                    console.log('remove element'+ msg);
+                    socket.broadcast.emit("removeElement",msg);
+                    // io.emit("addMessage",msg);
+                    });
     socket.on("addMessage", function(msg){
         console.log('Le message est '+ msg);
         socket.broadcast.emit("addMessage",msg);
