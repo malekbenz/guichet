@@ -1,9 +1,9 @@
 ﻿$(function () {
   /// Add or remove an element --- action ="addElement"
-    function actionElement(srvName, action, element){
+    function actionElement(srvName, action, itemIndex){
       socket.emit(action, {
                 srvName:srvName,
-                element:element
+                item:itemIndex
             }
         );
     }
@@ -18,13 +18,14 @@
     myTimer         = document.getElementById("myTimer");
     listMessages    = document.getElementById("listMessages");
 
-    socket.on("removeElement", function(msg){
-                   demande.removeElement(msg.element);
+    socket.on("removeElement", function(data){
+
+                   demande.removeElement(data.item);
                       })
 
-    socket.on("addElement", function(msg){
+    socket.on("addElement", function(data){
               demande.addElement();
-              console.log(msg.element);
+              console.log(data);
                   })
 
     socket.on("myTimer", function(msg){

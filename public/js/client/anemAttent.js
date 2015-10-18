@@ -27,10 +27,10 @@
     this.badge    = myDiv.find(".attent");
     this.badgeNxt = myDiv.find(".next");
 
-
     (function (that) {
         $(that.list).on("click", ".btn", function () { // .list-group-item
             var item =Number($(this).text());
+            console.log(item);
             that.removeElement(item);
             if (callback)
                 {callback("demande","removeElement",item);}
@@ -44,19 +44,6 @@
         });
     })(this);
 
-    this.removeElement =function(item){
-
-      var that = this;
-      var itemIndex= that.elements.indexOf(item);
-      var itemId ="#"+that.items[itemIndex];
-      $(itemId).fadeOut().remove();
-
-      that.elements.splice(itemIndex ,1);
-      that.items.splice(itemIndex,1);
-
-      that.updateBadge();
-
-    }
 
 
     this.addElement = function () {
@@ -74,6 +61,19 @@
         this.elements.push(nxtNumber);
         this.items.push(parentName+nxtNumber);
         this.updateBadge();
+    }
+    this.removeElement =function(item){
+
+          var that = this;
+          var itemIndex= that.elements.indexOf(item);
+          var itemId ="#"+that.items[itemIndex];
+          $(itemId).fadeOut().remove();
+
+          that.elements.splice(itemIndex ,1);
+          that.items.splice(itemIndex,1);
+
+          that.updateBadge();
+
     }
 }
 

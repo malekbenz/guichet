@@ -19,8 +19,8 @@ app.get('/api/developer/:index', function (req, res) {
 });
 
 var service ={};
-var elementsDemande = [];
-
+var elements = [];
+var max =25;
 var clients =["addMessage"];
 io.on("connection", function(socket)
     {
@@ -31,29 +31,37 @@ io.on("connection", function(socket)
         clients.push(srvName);
 
     })
+    function addItem(){
+      var lastItem = elements[(elements.length-1)] || 0 ;
+      var nxtNumber = ++lastItem % max || 1;
+      elements.push(nxtNumber);
+
+    }
+
+    function removeItem(item){
+      var itemIndex=  elements.indexOf(item);
+      elements.splice(itemIndex ,1);
+
+    }
 
     socket.on("addElement", function(msg){
-            console.log('Le message est '+ msg.element);
-            socket.broadcast.emit("addElement",msg);
+            addItem();
+            console.log('La file est '+ elements);
+            socket.broadcast.emit("addElement",elements);
             // io.emit("addMessage",msg);
             });
-
-    socket.on("removeElement", function(msg){
-                    console.log('remove element'+ msg);
-                    socket.broadcast.emit("removeElement",msg);
+    socket.on("removeElement", function(data){
+              removeItem(data.item);
+              console.log('remove element : '+ data.item);
+              socket.broadcast.emit("removeElement",data);
                     // io.emit("addMessage",msg);
-                    });
-    socket.on("addMessage", function(msg){
-        console.log('Le message est '+ msg.element);
-        socket.broadcast.emit("addMessage",msg);
+              });
 
+    socket.on("addMessage", function(data){
+        console.log('Le message est '+ data.item);
+        socket.broadcast.emit("addMessage",data);
         // io.emit("addMessage",msg);
         });
-
-    // socket.on("addMessage", function(msg){
-    //     console.log('Le message est '+ msg);
-    //     io.emit("addMessage",msg);
-    //     });
 
     setInterval(function(){
         var date =moment().format("HH:mm:ss")  ;
