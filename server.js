@@ -19,6 +19,8 @@ app.get('/api/developer/:index', function (req, res) {
 });
 
 var service ={};
+var elementsDemande = [];
+
 var clients =["addMessage"];
 io.on("connection", function(socket)
     {
@@ -31,7 +33,7 @@ io.on("connection", function(socket)
     })
 
     socket.on("addElement", function(msg){
-            console.log('Le message est '+ msg);
+            console.log('Le message est '+ msg.element);
             socket.broadcast.emit("addElement",msg);
             // io.emit("addMessage",msg);
             });
@@ -42,8 +44,9 @@ io.on("connection", function(socket)
                     // io.emit("addMessage",msg);
                     });
     socket.on("addMessage", function(msg){
-        console.log('Le message est '+ msg);
+        console.log('Le message est '+ msg.element);
         socket.broadcast.emit("addMessage",msg);
+
         // io.emit("addMessage",msg);
         });
 

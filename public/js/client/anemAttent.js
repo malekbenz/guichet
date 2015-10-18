@@ -3,8 +3,10 @@
     var max = max || 10;
     var contentId = "#content" || "#" + content;
     var parentId = "#" + parentName;
-    var itemTemplate = '<a href="#" class="list-group-item "></a>',
-        cssElment = ['list-group-item-danger', 'list-group-item-success', 'list-group-item-warning'];
+
+
+    var itemTemplate =  '<a href="#" class="btn btn-primary btn-lg"></span></a>', //list-group-item
+        cssElment =['btn-success', 'btn-warning','btn-danger','btn-info','btn-primary '] ; //['list-group-item-danger', 'list-group-item-success', 'list-group-item-warning'];
 
     function addListItemInline(idName) {
         var mydiv = $('<div><div class="panel panel-default">    <div class="panel-body">'
@@ -27,7 +29,7 @@
 
 
     (function (that) {
-        $(that.list).on("click", ".list-group-item", function () {
+        $(that.list).on("click", ".btn", function () { // .list-group-item
             var item =Number($(this).text());
             that.removeElement(item);
             if (callback)
@@ -58,12 +60,17 @@
 
 
     this.addElement = function () {
-        var i = this.elements.length % 3;
+        var i = this.elements.length % cssElment.length;
         var lastItem = this.elements[(this.elements.length-1)] || 0 ;
 
         var nxtNumber = ++lastItem % max || 1;
-        var item = itemTemplate;
-        this.list.append($(item).attr("id",parentName+nxtNumber).addClass(cssElment[i]).text(nxtNumber));
+        var icone = '<span class="glyphicon glyphicon-user" aria-hidden="true">';
+
+        var item = $(itemTemplate)
+                            .attr("id",parentName+nxtNumber)
+                            .addClass(cssElment[i])
+                            .html(icone+ ""+ ((nxtNumber <= 9) ? '0' + nxtNumber: nxtNumber) );
+        this.list.append(item);
         this.elements.push(nxtNumber);
         this.items.push(parentName+nxtNumber);
         this.updateBadge();
