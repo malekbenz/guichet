@@ -18,40 +18,69 @@ app.get('/api/developer/:index', function (req, res) {
     res.json(developers[req.params.index]);
 });
 
-var service ={};
-var elements = [];
-var max =25;
-var clients =["addMessage"];
+
+var objAttent = function(){
+          this.demandes =[],
+          this.Employeurs =[],
+          this.DAIP =[]
+      }
+
+var listServices = new objAttent();
+var max =20;
+
 io.on("connection", function(socket)
     {
-      var addedService = false;
-    console.log("a new Connection");
-    socket.on("addService",function(srvName){
-      if (clients.indexOf(srvName))
-        clients.push(srvName);
 
-    })
-    function addItem(){
+      var addedService = false;
+      console.log("a new Connection");
+      // envoi des listes d'attente
+      socket.emit("firstConnection",listServices);
+
+    function getServiceElements(serviceName){
+      var elements =[];
+
+      switch (serviceName.toUpperCase()) {
+              case "demandes".toUpperCase():
+                  elements = listServices.demandes;
+                  break;
+              case "Employeurs".toUpperCase():
+                  elements = listServices.Employeurs;
+                  break;
+              case "DAIP".toUpperCase():
+                  elements = listServices.DAIP;
+                  break;
+                }
+                return elements;
+    }
+
+    function addItem(service){
+      var elements =getServiceElements(service);
+
       var lastItem = elements[(elements.length-1)] || 0 ;
       var nxtNumber = ++lastItem % max || 1;
+
       elements.push(nxtNumber);
 
     }
 
-    function removeItem(item){
+    function removeItem(service,item){
+      var elements =getServiceElements(service);
+
       var itemIndex=  elements.indexOf(item);
       elements.splice(itemIndex ,1);
 
     }
 
-    socket.on("addElement", function(msg){
-            addItem();
-            console.log('La file est '+ elements);
-            socket.broadcast.emit("addElement",elements);
+    socket.on("addElement", function(data){
+          console.log(data.srvName)
+            addItem(data.srvName);
+
+            socket.broadcast.emit("addElement",data);
             // io.emit("addMessage",msg);
             });
+
     socket.on("removeElement", function(data){
-              removeItem(data.item);
+              removeItem("demandes",data.item);
               console.log('remove element : '+ data.item);
               socket.broadcast.emit("removeElement",data);
                     // io.emit("addMessage",msg);

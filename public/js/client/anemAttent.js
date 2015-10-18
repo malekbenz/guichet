@@ -23,6 +23,7 @@
     var myDiv = addListItemInline(parentName, contentId).appendTo(contentId);
     this.elements = [];
     this.items = [];
+    this.serviceName = parentName;
     this.list     = $(parentId).find(".list-group");
     this.badge    = myDiv.find(".attent");
     this.badgeNxt = myDiv.find(".next");
@@ -33,13 +34,13 @@
             console.log(item);
             that.removeElement(item);
             if (callback)
-                {callback("demande","removeElement",item);}
+                {callback(that.serviceName,"removeElement",item);}
 
           });
         myDiv.find("button").on("click", function () {
             that.addElement();
             if (callback)
-                {callback("demande","addElement","my element");}
+                {callback(that.serviceName,"addElement","my element");}
 
         });
     })(this);

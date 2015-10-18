@@ -8,24 +8,46 @@
         );
     }
 
-    demande = new anemAttent("Demande", 15,actionElement);
+    var listService =[];
+    var listServiceName =[];
+    function addAttent(serviceName, nbr){
+        listService.push(new anemAttent(serviceName, nbr,actionElement));
+        listServiceName.push(serviceName.toUpperCase());
+    }
+    function getServiceByName(serviceName){
+      return listService[listServiceName.indexOf(serviceName.toUpperCase())];
+    }
 
-    daip = new anemAttent("Daip", 5);
-    employeur = new anemAttent("Employeur");
+    // demande = new anemAttent("Demandes", 20,actionElement);
+    addAttent("Demandes", 20);
+    addAttent("Daip", 20);
+    addAttent("Employeurs", 20);
+    // console.log(listService[0]);
+    // console.log(listServiceName);
+    // console.log(listService);
+    // console.log(getServiceByName("demandes"));
+
+    // daip = new anemAttent("Daip", 20,actionElement);
+    // employeur = new anemAttent("Employeurs",20,actionElement);
 
     var socket = io();
 
     myTimer         = document.getElementById("myTimer");
     listMessages    = document.getElementById("listMessages");
 
-    socket.on("removeElement", function(data){
+    socket.on("firstConnection", function(data){
+              console.log(data);
+                  })
 
-                   demande.removeElement(data.item);
+    socket.on("removeElement", function(data){
+            console.log(data);
+
+            getServiceByName(data.srvName).removeElement(data.item);
                       })
 
     socket.on("addElement", function(data){
-              demande.addElement();
-              console.log(data);
+            console.log(data.srvName);
+            getServiceByName(data.srvName).addElement();
                   })
 
     socket.on("myTimer", function(msg){
