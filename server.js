@@ -80,7 +80,7 @@ io.on("connection", function(socket)
             });
 
     socket.on("removeElement", function(data){
-              removeItem("demandes",data.item);
+              removeItem(data.srvName,data.item);
               console.log('remove element : '+ data.item);
               socket.broadcast.emit("removeElement",data);
                     // io.emit("addMessage",msg);

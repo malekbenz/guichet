@@ -29,14 +29,16 @@
     this.badgeNxt = myDiv.find(".next");
 
     (function (that) {
+        // Button click for remove item
         $(that.list).on("click", ".btn", function () { // .list-group-item
             var item =Number($(this).text());
-            console.log(item);
+
             that.removeElement(item);
             if (callback)
                 {callback(that.serviceName,"removeElement",item);}
 
           });
+        // Button click to Add item
         myDiv.find("button").on("click", function () {
             that.addElement();
             if (callback)
@@ -48,20 +50,48 @@
 
 
     this.addElement = function () {
-        var i = this.elements.length % cssElment.length;
-        var lastItem = this.elements[(this.elements.length-1)] || 0 ;
+        var that =this;
+        var i = that.elements.length % cssElment.length;
+        var lastItem = that.elements[(that.elements.length-1)] || 0 ;
 
         var nxtNumber = ++lastItem % max || 1;
         var icone = '<span class="glyphicon glyphicon-user" aria-hidden="true">';
 
         var item = $(itemTemplate)
-                            .attr("id",parentName+nxtNumber)
+                            .attr("id",that.serviceName + nxtNumber)
                             .addClass(cssElment[i])
                             .html(icone+ ""+ ((nxtNumber <= 9) ? '0' + nxtNumber: nxtNumber) );
-        this.list.append(item);
-        this.elements.push(nxtNumber);
-        this.items.push(parentName+nxtNumber);
-        this.updateBadge();
+        that.list.append(item);
+        that.elements.push(nxtNumber);
+        that.items.push(that.serviceName + nxtNumber);
+        that.updateBadge();
+    }
+
+    this.initilizeElements = function (dataElements) {
+        var that =this;
+        var icone = '<span class="glyphicon glyphicon-user" aria-hidden="true">';
+        console.log(dataElements);
+
+        for(var index=0; index< dataElements.length; index++)
+        {
+        var i = that.elements.length % cssElment.length;
+        var nxtNumber = dataElements[index];
+        var item = $(itemTemplate)
+                            .attr("id",that.serviceName + nxtNumber)
+                            .addClass(cssElment[i])
+                            .html(icone+ ""+ ((nxtNumber <= 9) ? '0' + nxtNumber: nxtNumber) );
+        that.list.append(item);
+        that.elements.push(nxtNumber);
+        that.items.push(that.serviceName + nxtNumber);
+
+
+        }
+
+        // var lastItem = that.elements[(that.elements.length-1)] || 0 ;
+
+        // var nxtNumber = ++lastItem % max || 1;
+
+        that.updateBadge();
     }
     this.removeElement =function(item){
 

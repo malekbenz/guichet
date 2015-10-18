@@ -18,25 +18,39 @@
       return listService[listServiceName.indexOf(serviceName.toUpperCase())];
     }
 
-    // demande = new anemAttent("Demandes", 20,actionElement);
     addAttent("Demandes", 20);
     addAttent("Daip", 20);
     addAttent("Employeurs", 20);
-    // console.log(listService[0]);
-    // console.log(listServiceName);
-    // console.log(listService);
-    // console.log(getServiceByName("demandes"));
-
-    // daip = new anemAttent("Daip", 20,actionElement);
-    // employeur = new anemAttent("Employeurs",20,actionElement);
 
     var socket = io();
 
     myTimer         = document.getElementById("myTimer");
     listMessages    = document.getElementById("listMessages");
 
+      function getServiceFromObject(serviceName, data){
+        var elements=[];
+        switch (serviceName.toUpperCase()) {
+                case "demandes".toUpperCase():
+                    elements = data.demandes;
+                    break;
+                case "Employeurs".toUpperCase():
+                    elements = data.Employeurs;
+                    break;
+                case "DAIP".toUpperCase():
+                    elements = data.DAIP;
+                    break;
+                  }
+          return elements;
+      }
+
     socket.on("firstConnection", function(data){
-              console.log(data);
+
+              var elements=[];
+                for (var index = 0; index < listService.length; index++ ){
+                    elements = getServiceFromObject(listServiceName[index] ,data);
+                    listService[index].initilizeElements(elements);
+                  }
+
                   })
 
     socket.on("removeElement", function(data){
