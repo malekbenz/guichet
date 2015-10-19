@@ -1,16 +1,19 @@
-﻿var anemAttent = function (parentName, max, callback, content) {
+﻿var anemAttent = function (parentName, max, callback, location, content) {
 
-    var max = max || 10;
+    var max = max || 54;
     var contentId = "#content" || "#" + content;
     var parentId = "#" + parentName;
 
+    var cssHide = (location == "demande") ?"hide":"";
+    // console.log(location);
+    // console.log(cssHide);
 
     var itemTemplate =  '<a href="#" class="btn btn-primary btn-lg"></span></a>', //list-group-item
         cssElment =['btn-success', 'btn-warning','btn-danger','btn-info','btn-primary '] ; //['list-group-item-danger', 'list-group-item-success', 'list-group-item-warning'];
 
     function addListItemInline(idName) {
-        var mydiv = $('<div><div class="panel panel-default">    <div class="panel-body">'
-                        + '<button class="btn btn-primary btn-lg btn-block">' + idName
+        var mydiv = $('<div><div class="panel panel-default">    <div class="panel-body '+cssHide+'">'
+                        + '<button class="btn btn-primary btn-lg btn-block ">' + idName
                         + '<br/> <span class="badge attent">0</span> <span class="badge next">1</span>  </button> '
                         + '</div></div>'
                         + ' <div class="list-group"></div>'
@@ -87,9 +90,7 @@
 
         }
 
-        // var lastItem = that.elements[(that.elements.length-1)] || 0 ;
 
-        // var nxtNumber = ++lastItem % max || 1;
 
         that.updateBadge();
     }

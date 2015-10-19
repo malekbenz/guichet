@@ -14,9 +14,6 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 app.use(express.static(__dirname + '/public'));
 
-app.get('/api/developer/:index', function (req, res) {
-    res.json(developers[req.params.index]);
-});
 
 
 var objAttent = function(){
@@ -26,15 +23,7 @@ var objAttent = function(){
       }
 
 var listServices = new objAttent();
-var max =20;
-
-io.on("connection", function(socket)
-    {
-
-      var addedService = false;
-      console.log("a new Connection");
-      // envoi des listes d'attente
-      socket.emit("firstConnection",listServices);
+var max =54;
 
     function getServiceElements(serviceName){
       var elements =[];
@@ -52,6 +41,25 @@ io.on("connection", function(socket)
                 }
                 return elements;
     }
+
+app.get('/api/service/:serviceName', function (req, res) {
+  var elements = getServiceElements(req.params.serviceName);
+  // console.log(req.params.serviceName);
+  var lastItem = elements[(elements.length-1)] || 0 ;
+  var nxtNumber = ++lastItem % max || 1;
+    //  res.send('user ' + req.params.serviceName);
+
+     res.json({nxtNumber:nxtNumber});
+});
+
+io.on("connection", function(socket)
+    {
+
+      var addedService = false;
+      console.log("a new Connection");
+      // envoi des listes d'attente
+      socket.emit("firstConnection",listServices);
+
 
     function addItem(service){
       var elements =getServiceElements(service);

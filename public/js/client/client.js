@@ -10,17 +10,21 @@
 
     var listService =[];
     var listServiceName =[];
+
+    var location = (decodeURIComponent(window.location)).split('#')[1] ;
+
+
     function addAttent(serviceName, nbr){
-        listService.push(new anemAttent(serviceName, nbr,actionElement));
+        listService.push(new anemAttent(serviceName, nbr,actionElement, location));
         listServiceName.push(serviceName.toUpperCase());
     }
     function getServiceByName(serviceName){
       return listService[listServiceName.indexOf(serviceName.toUpperCase())];
     }
 
-    addAttent("Demandes", 20);
-    addAttent("Daip", 20);
-    addAttent("Employeurs", 20);
+    addAttent("Demandes", 55);
+    // addAttent("Daip", 55);
+    // addAttent("Employeurs", 55);
 
     var socket = io();
 
@@ -65,7 +69,7 @@
                   })
 
     socket.on("myTimer", function(msg){
-                          myTimer.innerHTML=  msg ;
+                          myTimer.innerHTML=  msg  ;
                               })
 
 
