@@ -63,12 +63,7 @@ io.on("connection", function(socket)
     function addItem(service){
       var srv = getServiceElements(service);
       srv.lastNumber = (srv.lastNumber + 1 ) % max || 1;
-      console.log(srv.elements);
-      console.info(srv.lastNumber);
       srv.elements.push(srv.lastNumber);
-      console.log(srv.elements);
-      // srv.lastNumber = (srv.lastNumber +1) % max || 1;
-      // console.log(srv.elements);
 
     }
 
@@ -81,18 +76,17 @@ io.on("connection", function(socket)
     }
 
     socket.on("addElement", function(data){
-          console.log(data.srvName)
-            addItem(data.srvName);
 
+            addItem(data.srvName);
             // socket.broadcast.emit("addElement",data);
             io.emit("addElement",data);
             });
 
     socket.on("removeElement", function(data){
               removeItem(data.srvName,data.item);
-              console.log('remove element : '+ data.item);
-              socket.broadcast.emit("removeElement",data);
-                    // io.emit("addMessage",msg);
+
+              // socket.broadcast.emit("removeElement",data);
+              io.emit("removeElement",data);
               });
 
 

@@ -36,7 +36,7 @@
         $(that.list).on("click", ".btn", function () { // .list-group-item
             var item =Number($(this).text());
 
-            that.removeElement(item);
+            // that.removeElement(item);
             if (callback)
                 {callback(that.serviceName,"removeElement",item);}
 
@@ -55,10 +55,6 @@
     this.addElement = function (callback) {
         var that =this;
         var i = that.elements.length % cssElment.length;
-        // var lastItem = that.elements[(that.elements.length-1)] || 0 ;
-
-        // var nxtNumber = ++lastItem % max || 1;
-
         var icone = '<span class="glyphicon glyphicon-user" aria-hidden="true">';
         $.getJSON( "/api/service/"+that.serviceName, function(data) {
                         var nxtNumber =data.nxtNumber;
