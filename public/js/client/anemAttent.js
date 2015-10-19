@@ -43,7 +43,7 @@
           });
         // Button click to Add item
         myDiv.find("button").on("click", function () {
-            that.addElement();
+            // that.addElement();
             if (callback)
                 {callback(that.serviceName,"addElement","my element");}
 

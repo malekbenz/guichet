@@ -19,7 +19,7 @@ app.use(express.static(__dirname + '/public'));
 var objAttent = function(){
           this.demandes ={elements:[], lastNumber:0 },
           this.Employeurs ={elements:[], lastNumber:0 },
-          this.DAIP =={elements:[], lastNumber :1}
+          this.DAIP =={elements:[], lastNumber :0}
       }
 
 var listServices = new objAttent();
@@ -42,11 +42,13 @@ var max =54;
                 return srv;
     }
 
+
 app.get('/api/service/:serviceName', function (req, res) {
+
   var elements = getServiceElements(req.params.serviceName);
 
-  var nxtNumber = ++elements.lastNumber % max || 1;
-  res.json({nxtNumber:nxtNumber});
+  // elements.lastNumber = (++elements.lastNumber+1) % max || 1;
+  res.json({nxtNumber:elements.lastNumber});
 });
 
 io.on("connection", function(socket)
@@ -60,13 +62,13 @@ io.on("connection", function(socket)
 
     function addItem(service){
       var srv = getServiceElements(service);
-
+      srv.lastNumber = (srv.lastNumber + 1 ) % max || 1;
       console.log(srv.elements);
       console.info(srv.lastNumber);
       srv.elements.push(srv.lastNumber);
       console.log(srv.elements);
-      srv.lastNumber = (srv.lastNumber +1) % max || 1;
-      console.log(srv.elements);
+      // srv.lastNumber = (srv.lastNumber +1) % max || 1;
+      // console.log(srv.elements);
 
     }
 
@@ -82,8 +84,8 @@ io.on("connection", function(socket)
           console.log(data.srvName)
             addItem(data.srvName);
 
-            socket.broadcast.emit("addElement",data);
-            // io.emit("addMessage",msg);
+            // socket.broadcast.emit("addElement",data);
+            io.emit("addElement",data);
             });
 
     socket.on("removeElement", function(data){
