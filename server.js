@@ -17,39 +17,36 @@ app.use(express.static(__dirname + '/public'));
 
 
 var objAttent = function(){
-          this.demandes =[],
-          this.Employeurs =[],
-          this.DAIP =[]
+          this.demandes ={elements:[], lastNumber:0 },
+          this.Employeurs ={elements:[], lastNumber:0 },
+          this.DAIP =={elements:[], lastNumber :1}
       }
 
 var listServices = new objAttent();
 var max =54;
 
     function getServiceElements(serviceName){
-      var elements =[];
+      var srv =[];
 
       switch (serviceName.toUpperCase()) {
               case "demandes".toUpperCase():
-                  elements = listServices.demandes;
+                  srv = listServices.demandes;
                   break;
               case "Employeurs".toUpperCase():
-                  elements = listServices.Employeurs;
+                  srv = listServices.Employeurs;
                   break;
               case "DAIP".toUpperCase():
-                  elements = listServices.DAIP;
+                  srv = listServices.DAIP;
                   break;
                 }
-                return elements;
+                return srv;
     }
 
 app.get('/api/service/:serviceName', function (req, res) {
   var elements = getServiceElements(req.params.serviceName);
-  // console.log(req.params.serviceName);
-  var lastItem = elements[(elements.length-1)] || 0 ;
-  var nxtNumber = ++lastItem % max || 1;
-    //  res.send('user ' + req.params.serviceName);
 
-     res.json({nxtNumber:nxtNumber});
+  var nxtNumber = ++elements.lastNumber % max || 1;
+  res.json({nxtNumber:nxtNumber});
 });
 
 io.on("connection", function(socket)
@@ -62,17 +59,19 @@ io.on("connection", function(socket)
 
 
     function addItem(service){
-      var elements =getServiceElements(service);
+      var srv = getServiceElements(service);
 
-      var lastItem = elements[(elements.length-1)] || 0 ;
-      var nxtNumber = ++lastItem % max || 1;
-
-      elements.push(nxtNumber);
+      console.log(srv.elements);
+      console.info(srv.lastNumber);
+      srv.elements.push(srv.lastNumber);
+      console.log(srv.elements);
+      srv.lastNumber = (srv.lastNumber +1) % max || 1;
+      console.log(srv.elements);
 
     }
 
     function removeItem(service,item){
-      var elements =getServiceElements(service);
+      var elements =getServiceElements(service).elements;
 
       var itemIndex=  elements.indexOf(item);
       elements.splice(itemIndex ,1);
@@ -94,11 +93,6 @@ io.on("connection", function(socket)
                     // io.emit("addMessage",msg);
               });
 
-    socket.on("addMessage", function(data){
-        console.log('Le message est '+ data.item);
-        socket.broadcast.emit("addMessage",data);
-        // io.emit("addMessage",msg);
-        });
 
     setInterval(function(){
         var date =moment().format("HH:mm:ss")  ;

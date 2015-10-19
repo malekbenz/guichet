@@ -13,6 +13,25 @@
 
     var location = (decodeURIComponent(window.location)).split('#')[1] ;
 
+    $("#getNext").on("click",function(){
+
+        getNextNumber("demandes");
+
+    })
+    function getNextNumber(serviceName){
+
+        $.getJSON( "/api/service/"+serviceName, function(data) {
+                    $("#result").text( " success ");
+                    console.log( data.nxtNumber);
+                  })
+                    .fail(function() {
+                      console.log( "error" );
+                    })
+                    // .always(function() {
+                    //   console.log( "complete" );
+                    // });
+                  }
+
 
     function addAttent(serviceName, nbr){
         listService.push(new anemAttent(serviceName, nbr,actionElement, location));
@@ -35,13 +54,13 @@
         var elements=[];
         switch (serviceName.toUpperCase()) {
                 case "demandes".toUpperCase():
-                    elements = data.demandes;
+                    elements = data.demandes.elements;
                     break;
                 case "Employeurs".toUpperCase():
-                    elements = data.Employeurs;
+                    elements = data.Employeurs.elements;
                     break;
                 case "DAIP".toUpperCase():
-                    elements = data.DAIP;
+                    elements = data.DAIP.elements;
                     break;
                   }
           return elements;
@@ -49,6 +68,7 @@
 
     socket.on("firstConnection", function(data){
 
+            console.log(data);
               var elements=[];
                 for (var index = 0; index < listService.length; index++ ){
                     elements = getServiceFromObject(listServiceName[index] ,data);
@@ -67,6 +87,7 @@
             console.log(data.srvName);
             getServiceByName(data.srvName).addElement();
                   })
+
 
     socket.on("myTimer", function(msg){
                           myTimer.innerHTML=  msg  ;

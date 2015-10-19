@@ -52,22 +52,36 @@
 
 
 
-    this.addElement = function () {
+    this.addElement = function (callback) {
         var that =this;
         var i = that.elements.length % cssElment.length;
-        var lastItem = that.elements[(that.elements.length-1)] || 0 ;
+        // var lastItem = that.elements[(that.elements.length-1)] || 0 ;
 
-        var nxtNumber = ++lastItem % max || 1;
+        // var nxtNumber = ++lastItem % max || 1;
+
         var icone = '<span class="glyphicon glyphicon-user" aria-hidden="true">';
+        $.getJSON( "/api/service/"+that.serviceName, function(data) {
+                        var nxtNumber =data.nxtNumber;
+                          var item = $(itemTemplate)
+                                              .attr("id",that.serviceName + nxtNumber)
+                                              .addClass(cssElment[i])
+                                              .html(icone+ ""+ ((nxtNumber <= 9) ? '0' + nxtNumber: nxtNumber) );
+                          that.list.append(item);
+                          that.elements.push(nxtNumber);
+                          that.items.push(that.serviceName + nxtNumber);
+                          that.updateBadge();
 
-        var item = $(itemTemplate)
-                            .attr("id",that.serviceName + nxtNumber)
-                            .addClass(cssElment[i])
-                            .html(icone+ ""+ ((nxtNumber <= 9) ? '0' + nxtNumber: nxtNumber) );
-        that.list.append(item);
-        that.elements.push(nxtNumber);
-        that.items.push(that.serviceName + nxtNumber);
-        that.updateBadge();
+                          if (callback)
+                            callback(data);
+
+                  })
+                    .fail(function() {
+                      console.log( "error" );
+                    });
+
+
+
+
     }
 
     this.initilizeElements = function (dataElements) {
