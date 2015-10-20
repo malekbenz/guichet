@@ -56,14 +56,16 @@ io.on("connection", function(socket)
 
       var addedService = false;
       console.log("a new Connection");
-      // envoi des listes d'attente
+      // envoi des listes d'attente lors de la premiere Connection
       socket.emit("firstConnection",listServices);
 
 
-    function addItem(service){
-      var srv = getServiceElements(service);
+    function addItem(serviceName,callback){
+      var srv = getServiceElements(serviceName);
       srv.lastNumber = (srv.lastNumber + 1 ) % max || 1;
       srv.elements.push(srv.lastNumber);
+      if (callback)
+        callback(srv.lastNumber);
 
     }
 
@@ -76,10 +78,11 @@ io.on("connection", function(socket)
     }
 
     socket.on("addElement", function(data){
+            addItem(data.srvName, function(lastNumber){
+                  data.item =lastNumber;
+                  io.emit("addElement",data);// socket.broadcast.emit("addElement",data);
+            });
 
-            addItem(data.srvName);
-            // socket.broadcast.emit("addElement",data);
-            io.emit("addElement",data);
             });
 
     socket.on("removeElement", function(data){

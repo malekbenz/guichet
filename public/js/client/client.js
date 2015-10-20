@@ -78,14 +78,16 @@
                   })
 
     socket.on("removeElement", function(data){
-            console.log(data);
-
-            getServiceByName(data.srvName).removeElement(data.item);
+            console.info("To Remove " + data.srvName +" "+ data.item);
+            var srv =getServiceByName(data.srvName);
+            srv.removeElement(data.item);
                       })
 
     socket.on("addElement", function(data){
-            console.log(data.srvName);
-            getServiceByName(data.srvName).addElement();
+            // console.log(data.srvName);
+            console.info("To Add " + data.srvName +" "+ data.item);
+            var srv =getServiceByName(data.srvName);
+            srv.addElement(data.item);
                   })
 
 
