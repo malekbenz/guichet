@@ -52,12 +52,11 @@
 
 
 
-    this.addElement = function (callback) {
+    this.addElement = function (nextNumber) {
         var that =this;
         var i = that.elements.length % cssElment.length;
         var icone = '<span class="glyphicon glyphicon-user" aria-hidden="true">';
-        $.getJSON( "/api/service/"+that.serviceName, function(data) {
-                        var nxtNumber =data.nxtNumber;
+                        var nxtNumber =nextNumber;
                           var item = $(itemTemplate)
                                               .attr("id",that.serviceName + nxtNumber)
                                               .addClass(cssElment[i])
@@ -66,14 +65,14 @@
                           that.elements.push(nxtNumber);
                           that.items.push(that.serviceName + nxtNumber);
                           that.updateBadge();
+                          console.log("HI!" + nextNumber);
 
-                          if (callback)
-                            callback(data);
-
-                  })
-                    .fail(function() {
-                      console.log( "error" );
-                    });
+        // $.getJSON( "/api/service/"+that.serviceName, function(data) {
+        //
+        //           })
+        //             .fail(function() {
+        //               console.log( "error" );
+        //             });
 
 
 
