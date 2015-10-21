@@ -8,10 +8,19 @@
         );
     }
 
+    $(window).focus(function() {
+            window_focus = true;
+            console.log("window_focus");
+        }).blur(function() {
+            window_focus = false;
+            console.log("window_ Quitter ");
+    });
+
     var listService =[];
     var listServiceName =[];
 
     var location = (decodeURIComponent(window.location)).split('#')[1] ;
+
 
     $("#getNext").on("click",function(){
 
@@ -77,18 +86,19 @@
 
                   })
 
-    socket.on("removeElement", function(data){
-            console.info("To Remove " + data.srvName +" "+ data.item);
-            var srv =getServiceByName(data.srvName);
-            srv.removeElement(data.item);
-                      })
-
     socket.on("addElement", function(data){
             // console.log(data.srvName);
             console.info("To Add " + data.srvName +" "+ data.item);
             var srv =getServiceByName(data.srvName);
             srv.addElement(data.item);
                   })
+
+    socket.on("removeElement", function(data){
+            console.info("To Remove " + data.srvName +" "+ data.item);
+            var srv =getServiceByName(data.srvName);
+            srv.removeElement(data.item);
+                      })
+
 
 
     socket.on("myTimer", function(msg){
