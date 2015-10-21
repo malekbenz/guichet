@@ -77,6 +77,10 @@ io.on("connection", function(socket)
 
     }
 
+    socket.on("focus", function(data){
+      console.log("focus");
+      socket.emit("focus",listServices);
+    })
     socket.on("addElement", function(data){
             addItem(data.srvName, function(lastNumber){
                   data.item =lastNumber;

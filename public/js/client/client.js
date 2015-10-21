@@ -9,8 +9,7 @@
     }
 
     $(window).focus(function() {
-            window_focus = true;
-            console.log("window_focus");
+            socket.emit("focus");
         }).blur(function() {
             window_focus = false;
             console.log("window_ Quitter ");
@@ -21,12 +20,6 @@
 
     var location = (decodeURIComponent(window.location)).split('#')[1] ;
 
-
-    $("#getNext").on("click",function(){
-
-        getNextNumber("demandes");
-
-    })
     function getNextNumber(serviceName){
 
         $.getJSON( "/api/service/"+serviceName, function(data) {
@@ -57,7 +50,7 @@
     var socket = io();
 
     myTimer         = document.getElementById("myTimer");
-    listMessages    = document.getElementById("listMessages");
+    // listMessages    = document.getElementById("listMessages");
 
       function getServiceFromObject(serviceName, data){
         var elements=[];
@@ -83,8 +76,18 @@
                     elements = getServiceFromObject(listServiceName[index] ,data);
                     listService[index].initilizeElements(elements);
                   }
-
                   })
+
+    socket.on("focus", function(data){
+
+            console.log("focus");
+              var elements=[];
+                for (var index = 0; index < listService.length; index++ ){
+                    elements = getServiceFromObject(listServiceName[index] ,data);
+                    listService[index].initilizeElements(elements);
+                  }
+                  }
+                )
 
     socket.on("addElement", function(data){
             // console.log(data.srvName);
@@ -98,8 +101,6 @@
             var srv =getServiceByName(data.srvName);
             srv.removeElement(data.item);
                       })
-
-
 
     socket.on("myTimer", function(msg){
                           myTimer.innerHTML=  msg  ;

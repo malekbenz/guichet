@@ -51,6 +51,11 @@
     })(this);
 
 
+    this.clearAll=function(){
+                that.list.empty();
+                that.updateBadge();
+
+    }
 
     this.addElement = function (nextNumber) {
         var that =this;
@@ -65,7 +70,7 @@
                           that.elements.push(nxtNumber);
                           that.items.push(that.serviceName + nxtNumber);
                           that.updateBadge();
-                          console.log("HI!" + nextNumber);
+
 
         // $.getJSON( "/api/service/"+that.serviceName, function(data) {
         //
@@ -81,8 +86,13 @@
 
     this.initilizeElements = function (dataElements) {
         var that =this;
+        that.list.empty();
+        that.updateBadge();
+
         var icone = '<span class="glyphicon glyphicon-user" aria-hidden="true">';
         console.log(dataElements);
+        that.elements = [];
+        that.items = [];
 
         for(var index=0; index< dataElements.length; index++)
         {
@@ -98,8 +108,6 @@
 
 
         }
-
-
 
         that.updateBadge();
     }
