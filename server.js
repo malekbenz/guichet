@@ -14,16 +14,13 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 app.use(express.static(__dirname + '/public'));
 
-
-
 var objAttent = function(){
-          this.demandes ={elements:[], lastNumber:0 },
-          this.Employeurs ={elements:[], lastNumber:0 },
-          this.DAIP =={elements:[], lastNumber :0}
+          this.demandes   ={elements:[], lastNumber:0, max:54 },
+          this.Employeurs ={elements:[], lastNumber:0, max:54 },
+          this.DAIP       ={elements:[], lastNumber:0, max:54}
       }
 
 var listServices = new objAttent();
-var max =54;
 
     function getServiceElements(serviceName){
       var srv =[];
@@ -44,12 +41,24 @@ var max =54;
 
 
 app.get('/api/service/:serviceName', function (req, res) {
-
-  var elements = getServiceElements(req.params.serviceName);
-
-  // elements.lastNumber = (++elements.lastNumber+1) % max || 1;
-  res.json({nxtNumber:elements.lastNumber});
+          var elements = getServiceElements(req.params.serviceName);
+          res.json({nxtNumber:elements.lastNumber});
 });
+    function addItem(serviceName,callback){
+      var srv = getServiceElements(serviceName);
+      srv.lastNumber = (srv.lastNumber + 1 ) % (srv.max+1) || 1;
+      srv.elements.push(srv.lastNumber);
+      if (callback)
+        callback(srv.lastNumber);
+
+    }
+
+    function removeItem(service,item){
+      var elements =getServiceElements(service).elements;
+      var itemIndex=  elements.indexOf(item);
+      elements.splice(itemIndex ,1);
+
+    }
 
 io.on("connection", function(socket)
     {
@@ -60,22 +69,6 @@ io.on("connection", function(socket)
       socket.emit("firstConnection",listServices);
 
 
-    function addItem(serviceName,callback){
-      var srv = getServiceElements(serviceName);
-      srv.lastNumber = (srv.lastNumber + 1 ) % max || 1;
-      srv.elements.push(srv.lastNumber);
-      if (callback)
-        callback(srv.lastNumber);
-
-    }
-
-    function removeItem(service,item){
-      var elements =getServiceElements(service).elements;
-
-      var itemIndex=  elements.indexOf(item);
-      elements.splice(itemIndex ,1);
-
-    }
 
     socket.on("focus", function(data){
       console.log("focus");
@@ -91,7 +84,6 @@ io.on("connection", function(socket)
 
     socket.on("removeElement", function(data){
               removeItem(data.srvName,data.item);
-
               // socket.broadcast.emit("removeElement",data);
               io.emit("removeElement",data);
               });
@@ -101,6 +93,7 @@ io.on("connection", function(socket)
         var date =moment().format("HH:mm:ss")  ;
         io.emit("myTimer",date);
     },1000);
+
     socket.on('disconnect', function(){
         console.log('user disconnected');
         });

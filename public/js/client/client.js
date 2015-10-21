@@ -17,42 +17,26 @@
 
     var listService =[];
     var listServiceName =[];
-
+// pour connaitre le service
     var location = (decodeURIComponent(window.location)).split('#')[1] ;
 
-    function getNextNumber(serviceName){
-
-        $.getJSON( "/api/service/"+serviceName, function(data) {
-                    $("#result").text( " success ");
-                    console.log( data.nxtNumber);
-                  })
-                    .fail(function() {
-                      console.log( "error" );
-                    })
-                    // .always(function() {
-                    //   console.log( "complete" );
-                    // });
-                  }
-
-
     function addAttent(serviceName, nbr){
-        listService.push(new anemAttent(serviceName, nbr,actionElement, location));
+        listService.push(new anemAttent(serviceName, actionElement, location));
         listServiceName.push(serviceName.toUpperCase());
     }
+
     function getServiceByName(serviceName){
       return listService[listServiceName.indexOf(serviceName.toUpperCase())];
     }
 
     addAttent("Demandes", 55);
-    // addAttent("Daip", 55);
-    // addAttent("Employeurs", 55);
+    addAttent("Daip", 55);
+    addAttent("Employeurs", 55);
 
     var socket = io();
-
     myTimer         = document.getElementById("myTimer");
-    // listMessages    = document.getElementById("listMessages");
 
-      function getServiceFromObject(serviceName, data){
+    function getServiceFromObject(serviceName, data){
         var elements=[];
         switch (serviceName.toUpperCase()) {
                 case "demandes".toUpperCase():

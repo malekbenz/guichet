@@ -1,6 +1,5 @@
-﻿var anemAttent = function (parentName, max, callback, location, content) {
+﻿var anemAttent = function (parentName,  callback, location, content) {
 
-    var max = max || 54;
     var contentId = "#content" || "#" + content;
     var parentId = "#" + parentName;
 
@@ -70,7 +69,6 @@
                           that.elements.push(nxtNumber);
                           that.items.push(that.serviceName + nxtNumber);
                           that.updateBadge();
-
 
         // $.getJSON( "/api/service/"+that.serviceName, function(data) {
         //
