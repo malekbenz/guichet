@@ -83,14 +83,16 @@
     }
 
     this.initilizeElements = function (dataElements) {
+        console.log(dataElements);
+
         var that =this;
+        that.elements.length = 0; // vider le tableau
+        that.items.length = 0;
+
         that.list.empty();
-        that.updateBadge();
+        var addedItem=$("<div/>");
 
         var icone = '<span class="glyphicon glyphicon-user" aria-hidden="true">';
-        console.log(dataElements);
-        that.elements = [];
-        that.items = [];
 
         for(var index=0; index< dataElements.length; index++)
         {
@@ -100,12 +102,12 @@
                             .attr("id",that.serviceName + nxtNumber)
                             .addClass(cssElment[i])
                             .html(icone+ ""+ ((nxtNumber <= 9) ? '0' + nxtNumber: nxtNumber) );
-        that.list.append(item);
+        $(addedItem).append(item);
         that.elements.push(nxtNumber);
         that.items.push(that.serviceName + nxtNumber);
-
-
         }
+        that.list.append(addedItem);
+
 
         that.updateBadge();
     }

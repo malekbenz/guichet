@@ -64,7 +64,7 @@
 
     socket.on("focus", function(data){
 
-            console.log("focus");
+            // console.log("focus");
               var elements=[];
                 for (var index = 0; index < listService.length; index++ ){
                     elements = getServiceFromObject(listServiceName[index] ,data);
